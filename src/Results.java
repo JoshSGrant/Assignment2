@@ -16,6 +16,9 @@ public class Results {
         printResults = new PrintWriter(results);
     }
 
+    public void open(){
+
+    }
 
     public void won(){
         wins++;
@@ -26,7 +29,7 @@ public class Results {
     }
 
     public void save() throws IOException{
-        printResults = new PrintWriter("results.txt");
+        printResults = new PrintWriter(resultsfile);
         printResults.println(wins+loses);
         printResults.println(wins);
         printResults.println(loses);

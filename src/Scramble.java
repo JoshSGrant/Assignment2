@@ -5,18 +5,40 @@ import java.util.Scanner;
 public class Scramble {
 
     //todo: declare/move all "global" variables here
-    String filename;
-    Scanner wordFile;
+    private String filestring;
+    private Scanner wordFile;
+    String nextRealWord;
+    int test;
+    int roundNum = 0;
 
-    public Scramble(String words) throws FileNotFoundException {
-        this.filename = words; //this - vars part of this class
-        File wordList = new File(words);
+    public int test(){ //todo delete
+
+        return test;
+    }
+
+    public int roundNum(){
+
+        return roundNum;
+    }
+
+    public Scramble(String filename) throws FileNotFoundException {
+        //opens file "filename" and creates scanner for it
+        this.filestring = filename;
+        File wordList = new File(filename);
+        wordFile = new Scanner(wordList); //open  file
+        //todo DELETE
+        test ++;
+    }
+
+    public void close() throws IOException {
+        wordFile.close();
+    }
+
+    public void open() throws IOException {
+        File wordList = new File("words.txt");
         wordFile = new Scanner(wordList);
     }
 
-    public String getWords(){
-        return this.filename;
-    }
 
         /*PrintWriter temp = new PrintWriter("words.txt");
         temp.println("swamp");
@@ -40,37 +62,22 @@ public class Scramble {
         temp2.print("0");
         temp2.close();*/
 
-        //todo: ?open words.txt file here, change methods below so that
-        //todo: they can access Scanner and File classes?
 
 
     public String getRealWord() throws IOException{ //arg was "int roundNum"
 
-        /*
-        //Open results file to get round info and make new scanner for fil
-        //fixme
-        File resultsList = new File("results.txt");
-        Scanner resultsFile = new Scanner(resultsList);
-        //Read next line and assign round# to int roundNum
-        resultsFile.close();
-        */
+            for (int i = 0; i <= roundNum; i++) {
+                if (wordFile.hasNext())
+                    nextRealWord = wordFile.nextLine();
+                else
+                    nextRealWord = null;
+            }
 
-        String nextRealWord = "x"; //error msg
-
-        //Read next line in words.txt
-        //for(int i = 0; i <= roundNum; i++)
-        boolean check = wordFile.hasNext(); //checks to be sure there is more data in words.txt
-        if(check)
-            nextRealWord = wordFile.nextLine();
-        else
-            nextRealWord = null;
-
-        //wordFile.close();
         return nextRealWord;
 
     }
 
-    public String getScrambledWord(String realWord) throws IOException{
+    public String getScrambledWord() throws IOException {
 
         /*
         //Open results file to get round info and make new scanner for fil
@@ -81,27 +88,62 @@ public class Scramble {
         resultsFile.close();
         */
 
-        StringBuilder word = new StringBuilder();
-        String scramWord;
-        int wordLength = realWord.length();
-        int num;
-        StringBuilder wordNum = new StringBuilder(); //scrambled charAt#s to String for comparing
 
-        Random ranNum = new Random();
+        String realWord = nextRealWord;
+        String nah = null;
+        if (realWord != null) {
+            String realWordH1 = realWord.substring(0, 5);
+            String realWordH2 = realWord.substring(5);
+            int num;
+            StringBuilder word = new StringBuilder();
+            StringBuilder wordNum = new StringBuilder();
+            wordNum.setLength(0);
+            String scramWord="";
 
-        for (int i = 0; i < wordLength; i++) { //scrambling sequence
-            num = ranNum.nextInt(wordLength);
 
-            while(wordNum.toString().contains(Integer.toString(num))){
-                num = ranNum.nextInt(wordLength);
+            Random ranNum = new Random();
+
+            if (realWord.length() > 9) {
+                for (int i = 0; i < realWordH1.length(); i++) { //half 1
+                    num = ranNum.nextInt(realWordH1.length()); //get random #
+
+                    while (wordNum.toString().contains(Integer.toString(num))) { //ensure ran# unique
+                        num = ranNum.nextInt(realWordH1.length());
+                    }
+                    wordNum.append(Integer.toString(num));  //appends unique ran# to SB
+                    word.append(realWordH1.charAt(num)); //appends charAt(unique ran#) to SB word
+                }
+                wordNum.setLength(0);
+                for (int i = 0; i < realWordH2.length(); i++) { //half 2
+                    num = ranNum.nextInt(realWordH2.length()); //get random #
+
+                    while (wordNum.toString().contains(Integer.toString(num))) { //ensure ran# unique
+                        num = ranNum.nextInt(realWordH2.length());
+                    }
+                    wordNum.append(Integer.toString(num));  //appends unique ran# to SB
+                    word.append(realWordH2.charAt(num)); //appends charAt(unique ran#) to SB word
+
+                    scramWord = word.toString(); //casts SB word to String realWord
+                }
+            } else {
+                for (int i = 0; i < realWord.length(); i++) { //whole word (unsplit)
+                    num = ranNum.nextInt(realWord.length()); //get random #
+
+                    while (wordNum.toString().contains(Integer.toString(num))) { //ensure ran# unique
+                        num = ranNum.nextInt(realWord.length());
+                    }
+                    wordNum.append(Integer.toString(num));  //appends unique ran# to SB
+                    word.append(realWord.charAt(num)); //appends charAt(unique ran#) to SB word
+                }
+
+                scramWord = word.toString(); //casts SB word to String realWord
             }
-            wordNum.append(Integer.toString(num));
-            word.append(realWord.charAt(num));
+            return scramWord;
+
         }
+        else
 
-        scramWord = word.toString();  //assign scrambled substring to string
-        return scramWord;
-
+        return nah;
     }
 
 }

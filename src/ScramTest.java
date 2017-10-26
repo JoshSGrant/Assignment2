@@ -1,3 +1,4 @@
+// Josh Grant
 // CS 401 Fall 2017
 // Test file for Scramble class.  This program should run as is with your Scramble
 // class.  The scrambled versions of the words do not have to exactly match the ones
@@ -11,7 +12,7 @@ public class ScramTest
 
     public static void main(String[] args) throws IOException
     {
-        /*
+
         System.out.println("Testing normal use...\n");
         Scramble theScramble = new Scramble("words.txt");
         // Create Scramble object using the file name as an argument.  Note
@@ -48,7 +49,7 @@ public class ScramTest
         word2 = theScramble.getScrambledWord();
         System.out.println("Word: " + word1);
         System.out.println("Scram word: " + word2);
-        */
+
     }
 }
 
